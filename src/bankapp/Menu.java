@@ -1,7 +1,9 @@
 package bankapp;
 
+
 import java.util.HashMap;
 import java.util.Scanner;
+
 
 public class Menu {
     private static Scanner scanner = new Scanner(System.in);
@@ -9,8 +11,10 @@ public class Menu {
     private static BankAccount currentAccount = null;
     private static CreateAccount accountManager;
 
+
     public static void main(String[] args) {
         accountManager = new CreateAccount(userDatabase, scanner);
+
 
         while (true) {
             System.out.println("\n--- Welcome to BankApp ---");
@@ -18,6 +22,7 @@ public class Menu {
             System.out.println("2. Exit");
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
+
 
             switch (choice) {
                 case "1":
@@ -35,6 +40,7 @@ public class Menu {
         }
     }
 
+
     private static void showAccountMenu() {
         while (true) {
             System.out.println("\n--- Account Menu (" + currentAccount.getAccountType() + ") ---");
@@ -45,6 +51,7 @@ public class Menu {
             System.out.println("5. Logout");
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
+
 
             switch (choice) {
                 case "1":
@@ -83,6 +90,7 @@ public class Menu {
         }
     }
 
+
     private static double getDoubleInput() {
         while (!scanner.hasNextDouble()) {
             System.out.print("Invalid input. Please enter a number: ");
@@ -93,5 +101,3 @@ public class Menu {
         return value;
     }
 }
-
-

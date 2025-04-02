@@ -1,7 +1,10 @@
 package bankapp;
+
 public class BankAccount {
+
 	private double balance;
 	private String accountType;
+
 	
 	public BankAccount() {
 		this.balance = 0;
@@ -34,4 +37,3 @@ public class BankAccount {
 	}
 	
 }
-
