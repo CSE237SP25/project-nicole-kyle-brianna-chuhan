@@ -56,5 +56,17 @@ public class MenuTests {
         account.withdraw(120.0);
         assertEquals(380.0, account.getCurrentBalance(), 0.01);
     }
+    
+    @Test
+    public void testTransferBetweenAccounts() {
+        BankAccount sender = new BankAccount("checking");
+        BankAccount receiver = new BankAccount("savings");
+
+        sender.deposit(500.0);
+        sender.transferTo(receiver, 200.0);
+
+        assertEquals(300.0, sender.getCurrentBalance(), 0.01);
+        assertEquals(200.0, receiver.getCurrentBalance(), 0.01);
+    }
 }
 

@@ -34,5 +34,19 @@ public class BankAccount {
 		return accountType;
 	}
 	
+    public void transferTo(BankAccount targetAccount, double amount) {
+        if (targetAccount == null) {
+            throw new IllegalArgumentException("Target account cannot be null.");
+        }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Transfer amount must be greater than 0.");
+        }
+        if (this.balance < amount) {
+            throw new IllegalArgumentException("Insufficient funds for transfer.");
+        }
+        // Withdraw from the current account and deposit into the target account
+        this.withdraw(amount);
+        targetAccount.deposit(amount);
+    }
 	
 }

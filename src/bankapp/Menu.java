@@ -48,7 +48,8 @@ public class Menu {
             System.out.println("2. Withdraw");
             System.out.println("3. Check Balance");
             System.out.println("4. Change Password");
-            System.out.println("5. Logout");
+            System.out.println("5. Transfer Money");
+            System.out.println("6. Logout");
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
 
@@ -80,7 +81,30 @@ public class Menu {
                 case "4":
                     accountManager.changePassword();
                     break;
-                case "5":
+                case "5": 
+                    System.out.print("Enter recipient username: ");
+                    String recipientUsername = scanner.nextLine(); 
+                    
+                    BankAccount recipientAccount = accountManager.getAccountByUsername(recipientUsername);
+                    if (recipientAccount == null) { 
+                    	System.out.println("Recipient account not found."); 
+                        break;
+                    }
+
+                    System.out.print("Enter amount to transfer: ");
+                    double transferAmount = getDoubleInput();
+
+                    try {
+                        currentAccount.transferTo(recipientAccount, transferAmount);
+                        System.out.println("Transfer successful.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case "6":
+                	
+                	
                     System.out.println("Logged out.");
                     currentAccount = null;
                     return;

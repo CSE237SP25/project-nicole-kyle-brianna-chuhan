@@ -83,5 +83,9 @@ public class CreateAccount {
    public String getCurrentUsername() {
        return currentUsername;
    }
+   
+   public BankAccount getAccountByUsername(String username) { 
+       return accountMap.get(username); 
+   } 
 }
 

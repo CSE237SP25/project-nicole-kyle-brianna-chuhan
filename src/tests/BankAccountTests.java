@@ -50,6 +50,24 @@ public class BankAccountTests {
     }
     
     
+    @Test
+    public void testSimpleTransfer() {
+        // Create two accounts
+        BankAccount account1 = new BankAccount(null);
+        BankAccount account2 = new BankAccount(null);
+        
+        // Deposit into account1
+        account1.deposit(100);
+        
+        // Perform transfer from account1 to account2
+        account1.transferTo(account2, 50);
+        
+        // Check the balances after transfer
+        assertEquals(50.0, account1.getCurrentBalance(), 0.005);  // account1 should have 50 left
+        assertEquals(50.0, account2.getCurrentBalance(), 0.005);  // account2 should have 50
+    }
+
+    
 }
 
 
