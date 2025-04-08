@@ -17,14 +17,16 @@ public class BankAccount {
 	
 	
    public void withdraw(double amount) {
-       if (amount <= 0) {
-           throw new IllegalArgumentException("Withdrawal amount must be non-negative.");
-       }
-       if (amount > this.balance) {
-           throw new IllegalArgumentException("Insufficient funds.");
-       }
-       this.balance -= amount;
-   }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be non-negative.");
+        }
+        if (amount > this.balance) {
+    	    System.out.println("Insufficient funds. You will be charged an overdraft fee of $" + overdraftFee);
+            this.balance -= (amount + overdraftFee);
+        } else {
+        	this.balance -= amount;
+        }
+    }
   
 	public double getCurrentBalance() {
 		return this.balance;
