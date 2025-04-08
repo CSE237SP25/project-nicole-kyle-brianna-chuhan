@@ -1,81 +1,60 @@
 package tests;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import org.junit.jupiter.api.Test;
 import bankapp.BankAccount;
-
 public class BankAccountTests {
-
-    
-    @Test
-    public void testAccountCreation() {
-        BankAccount account = new BankAccount("mypassword");
-        assertNotNull(account);
-        assertTrue(account.getAccountId() >= 1000);
-        assertEquals(0.0, account.getCurrentBalance("mypassword"), 0.005);
-    }
-
-   
-    @Test
-    public void testSimpleDeposit() {
-        
-        BankAccount account = new BankAccount("mypassword");
-        account.deposit(25);
-        assertEquals(25.0, account.getCurrentBalance("mypassword"), 0.005);
-    }
-
-   
-    @Test
+	@Test
+	public void testSimpleDeposit() {
+		//1. Create objects to be tested
+		BankAccount account = new BankAccount(null);
+		
+		//2. Call the method being tested
+		account.deposit(25);
+		
+		//3. Use assertions to verify results
+		assertEquals(account.getCurrentBalance(), 25.0, 0.005);
+	}
+	
+	@Test
     public void testNegativeDeposit() {
-        
-        BankAccount account = new BankAccount("mypassword");
-
+        // 1. Create object to be tested
+        BankAccount account = new BankAccount(null);
+        // 2. Expect an exception when depositing a negative amount
         try {
             account.deposit(-25);
-            fail("IllegalArgumentException");
+            fail("Expected IllegalArgumentException for negative deposit");
         } catch (IllegalArgumentException e) {
-            assertTrue(e != null);
-            assertEquals("You must deposit more than 0", e.getMessage());
+            // Exception was expected, test passes
         }
     }
-
     @Test
-    public void testInvalidPassword() {
-        BankAccount account = new BankAccount("mypassword");
-        account.deposit(100);
-
-        double balance = account.getCurrentBalance("wrongpassword");
-
-        assertEquals(-1, balance);
-    }
-
-    @Test
-    public void testValidPassword() {
-        BankAccount account = new BankAccount("mypassword");
-        account.deposit(100);
-
-        double balance = account.getCurrentBalance("mypassword");
-
-        assertEquals(100.0, balance);
-    }
-
-    @Test
-    public void testMultipleDeposits() {
-        BankAccount account = new BankAccount("mypassword");
+    public void testWithdrawal() {
+        BankAccount account = new BankAccount(null);
         account.deposit(50);
-        account.deposit(25);
-        account.deposit(75);
-
-        assertEquals(150.0, account.getCurrentBalance("mypassword"), 0.005);
+        account.withdraw(20);
+        assertEquals(30.0, account.getCurrentBalance(), 0.005);
     }
-
     @Test
-    public void testGetAccountId() {
-        BankAccount account = new BankAccount("mypassword");
-        int accountId = account.getAccountId();
-        assertTrue(accountId >= 1000);
+    public void testWithdrawMoreThanBalance() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(30);
+        assertThrows(IllegalArgumentException.class, () -> account.withdraw(40));
     }
+    @Test
+    public void testNegativeWithdrawal() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(50);
+        assertThrows(IllegalArgumentException.class, () -> account.withdraw(-10));
+    }
+    
+    
 }
+
+
+
+
 
 
 

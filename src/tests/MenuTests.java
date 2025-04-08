@@ -12,7 +12,7 @@ public class MenuTests {
 
     @BeforeEach
     public void setUp() {
-        account = new BankAccount();
+        account = new BankAccount(null);
     }
 
     @Test
