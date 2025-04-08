@@ -49,7 +49,8 @@ public class Menu {
             System.out.println("3. Check Balance");
             System.out.println("4. Change Password");
             System.out.println("5. Transfer Money");
-            System.out.println("6. Logout");
+            System.out.println("6. Delete Account");
+            System.out.println("7. Logout");
             System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
 
@@ -101,10 +102,11 @@ public class Menu {
                         System.out.println(e.getMessage());
                     }
                     break;
-
                 case "6":
-                	
-                	
+                    accountManager.deleteAccount();
+                    currentAccount = null;
+                    return;
+                case "7":
                     System.out.println("Logged out.");
                     currentAccount = null;
                     return;
