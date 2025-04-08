@@ -87,5 +87,21 @@ public class CreateAccount {
    public BankAccount getAccountByUsername(String username) { 
        return accountMap.get(username); 
    } 
+
+   public void deleteAccount() {
+	    System.out.print("Enter your password to confirm you want to delete your account: ");
+	    String input = scanner.nextLine();
+
+	    if (!input.equals(currentPassword)) {
+	        System.out.println("Incorrect password. Account deletion cancelled.");
+	        return;
+	    }
+
+	    userDatabase.remove(currentUsername);
+	    System.out.println("Account '" + currentUsername + "' has been deleted. Please see your local bank to collect your remaining funds.");
+
+	    currentUsername = null;
+	    currentPassword = null;
+	}
 }
 
