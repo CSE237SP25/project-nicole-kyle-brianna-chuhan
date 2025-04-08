@@ -38,9 +38,11 @@ public class BankAccountTests {
     }
     @Test
     public void testWithdrawMoreThanBalance() {
-        BankAccount account = new BankAccount(null);
+    	BankAccount account = new BankAccount(null);
         account.deposit(30);
-        assertThrows(IllegalArgumentException.class, () -> account.withdraw(40));
+        account.withdraw(40); // overdraft by $10 + $25 fee
+
+        assertEquals(-35.0, account.getCurrentBalance(), 0.01);
     }
     @Test
     public void testNegativeWithdrawal() {
@@ -48,7 +50,25 @@ public class BankAccountTests {
         account.deposit(50);
         assertThrows(IllegalArgumentException.class, () -> account.withdraw(-10));
     }
-    
+    @Test
+    public void testOverdraftWithdrawal() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(100);
+        account.withdraw(150);
+
+        // Expected: 100 - 150 - 25 = -75
+        assertEquals(-75, account.getCurrentBalance(), 0.01);
+    }
+    @Test
+    public void testMultipleOverdrafts() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(100);
+        account.withdraw(150); // -75
+        account.withdraw(50);  // -75 - 50 - 25 = -150
+
+        assertEquals(-150, account.getCurrentBalance(), 0.01);
+    }
+
     
     @Test
     public void testSimpleTransfer() {
