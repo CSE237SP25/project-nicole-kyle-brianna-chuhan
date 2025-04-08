@@ -50,12 +50,17 @@ public class Menu {
             System.out.println("4. Change Password");
             System.out.println("5. Transfer Money");
             System.out.println("6. Logout");
-            System.out.print("Choose an option: ");
+            System.out.println("7. View Transaction History");
+            System.out.println("8.Freeze account: ");
             String choice = scanner.nextLine();
 
 
             switch (choice) {
                 case "1":
+                    if (currentAccount.isFrozen()) {
+                        System.out.println("Account is frozen. Please unfreeze it to make a deposit.");
+                        break;
+                    }
                     System.out.print("Enter amount to deposit: ");
                     double dep = getDoubleInput();
                     try {
@@ -66,6 +71,10 @@ public class Menu {
                     }
                     break;
                 case "2":
+                	if (currentAccount.isFrozen()) {
+                        System.out.println("Account is frozen. Please unfreeze it to make a deposit.");
+                        break;
+                    }
                     System.out.print("Enter amount to withdraw: ");
                     double wd = getDoubleInput();
                     try {
@@ -82,6 +91,10 @@ public class Menu {
                     accountManager.changePassword();
                     break;
                 case "5": 
+                	if (currentAccount.isFrozen()) {
+                        System.out.println("Account is frozen. Please unfreeze it to make a deposit.");
+                        break;
+                    }
                     System.out.print("Enter recipient username: ");
                     String recipientUsername = scanner.nextLine(); 
                     
@@ -108,6 +121,33 @@ public class Menu {
                     System.out.println("Logged out.");
                     currentAccount = null;
                     return;
+                case "7":
+                    System.out.println("--- Transaction History ---");
+                    for (String record : currentAccount.getTransactionHistory()) {
+                        System.out.println(record);
+                    }
+                    break;
+                case "8":
+                    if (currentAccount.isFrozen()) {
+                        System.out.print("Account is currently frozen. Do you want to unfreeze it? (yes/no): ");
+                        String input = scanner.nextLine().trim().toLowerCase();
+                        if (input.equals("yes")) {
+                            currentAccount.unfreezeAccount();
+                            System.out.println("Account has been unfrozen.");
+                        } else {
+                            System.out.println("No changes made.");
+                        }
+                    } else {
+                        System.out.print("Are you sure you want to freeze your account? (yes/no): ");
+                        String input = scanner.nextLine().trim().toLowerCase();
+                        if (input.equals("yes")) {
+                            currentAccount.freezeAccount();
+                            System.out.println("Account has been frozen.");
+                        } else {
+                            System.out.println("No changes made.");
+                        }
+                    }
+                    break;
                 default:
                     System.out.println("Invalid input.");
             }
@@ -121,7 +161,7 @@ public class Menu {
             scanner.next();
         }
         double value = scanner.nextDouble();
-        scanner.nextLine(); // consume newline
+        scanner.nextLine(); 
         return value;
     }
 }
