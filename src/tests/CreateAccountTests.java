@@ -57,6 +57,37 @@ public class CreateAccountTests {
         
         assertEquals("newPass", userDatabase.get("user"));
     }
+
+    @Test
+    public void testDeleteAccountSuccess() {
+        userDatabase.put("user", "pass123");
+
+        String input = "yes\nuser\npass123\nchecking\npass123\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        createAccount = new CreateAccount(userDatabase, new Scanner(System.in));
+        createAccount.authenticateUser();
+        createAccount.deleteAccount();
+
+        assertFalse(userDatabase.containsKey("user"));
+        assertNull(createAccount.getCurrentUsername());
+    }
+
+    @Test
+    public void testDeleteAccountIncorrectPassword() {
+        userDatabase.put("user", "pass123");
+
+        String input = "yes\nuser\npass123\nchecking\nwrongpass\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        createAccount = new CreateAccount(userDatabase, new Scanner(System.in));
+        createAccount.authenticateUser();
+        createAccount.deleteAccount();
+
+        // Ensure account is still in the system
+        assertTrue(userDatabase.containsKey("user"));
+        assertEquals("user", createAccount.getCurrentUsername());
+    }
 }
 
 
