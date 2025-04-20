@@ -3,6 +3,9 @@ public class BankAccount {
 	private double balance;
 	private String accountType;
 	
+	private static final double overdraftFee = 25.0;
+
+	
 	public BankAccount(String accountType) {
 		this.balance = 0;
 		this.accountType = accountType;
@@ -16,15 +19,22 @@ public class BankAccount {
 	}
 	
 	
-   public void withdraw(double amount) {
-       if (amount <= 0) {
-           throw new IllegalArgumentException("Withdrawal amount must be non-negative.");
-       }
-       if (amount > this.balance) {
-           throw new IllegalArgumentException("Insufficient funds.");
-       }
-       this.balance -= amount;
-   }
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be non-negative.");
+        }
+        if (amount > this.balance) {
+    	    System.out.println("Insufficient funds. You will be charged an overdraft fee of $" + overdraftFee);
+            this.balance -= (amount + overdraftFee);
+        } else {
+        	this.balance -= amount;
+        }
+        
+     // Alert if balance goes below $50
+        if (this.balance < 50) {
+            System.out.println("!Alert! Your account balance is below $50.");
+        }
+    }
   
 	public double getCurrentBalance() {
 		return this.balance;
