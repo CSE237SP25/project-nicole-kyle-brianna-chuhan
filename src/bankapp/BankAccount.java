@@ -2,10 +2,14 @@ package bankapp;
 public class BankAccount {
 	private double balance;
 	private String accountType;
+
+	private Double spendingLimit;
 	
 	public BankAccount(String accountType) {
 		this.balance = 0;
 		this.accountType = accountType;
+		this.spendingLimit = null;
+
 	}
 	
 	public void deposit(double amount) {
@@ -19,6 +23,9 @@ public class BankAccount {
    public void withdraw(double amount) {
        if (amount <= 0) {
            throw new IllegalArgumentException("Withdrawal amount must be non-negative.");
+       }
+       if (spendingLimit != null && amount > spendingLimit) {
+           throw new IllegalArgumentException("Cannot withdraw more than your spending limit: " + spendingLimit);
        }
        if (amount > this.balance) {
            throw new IllegalArgumentException("Insufficient funds.");
@@ -44,9 +51,28 @@ public class BankAccount {
         if (this.balance < amount) {
             throw new IllegalArgumentException("Insufficient funds for transfer.");
         }
+
+	if (spendingLimit != null && amount > spendingLimit) {
+            throw new IllegalArgumentException("Cannot transfer more than your spending limit: " + spendingLimit);
+        }
+	
         // Withdraw from the current account and deposit into the target account
         this.withdraw(amount);
         targetAccount.deposit(amount);
     }
 	
+    public void setSpendingLimit(double limit) {
+        if (limit <= 0) {
+            throw new IllegalArgumentException("Spending limit must be positive.");
+        }
+        this.spendingLimit = limit;
+    }
+
+    public void clearSpendingLimit() {
+        this.spendingLimit = null;
+    }
+
+    public Double getSpendingLimit() {
+        return this.spendingLimit;
+    }
 }
