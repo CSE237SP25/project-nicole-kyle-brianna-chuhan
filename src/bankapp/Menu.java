@@ -73,6 +73,12 @@ public class Menu {
                     }
                     System.out.print("Enter amount to withdraw: ");
                     double wd = getDoubleInput();
+                    if (wd >= 10000) { // Verifying security question for large withdrawals
+                        if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) {
+                            System.out.println("Security question incorrect. Logging out.");
+                            return;
+                        }
+                    }
                     try {
                         currentAccount.withdraw(wd);
                         System.out.println("Withdrawal successful.");
@@ -103,6 +109,12 @@ public class Menu {
                     }
                     System.out.print("Enter amount to transfer: ");
                     double transferAmount = getDoubleInput();
+                    if (transferAmount >= 10000) { // Verifying security question for large transfers
+                        if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) {
+                            System.out.println("Security question incorrect. Logging out.");
+                            return;
+                        }
+                    }
                     try {
                         currentAccount.transferTo(recipientAccount, transferAmount);
                         System.out.println("Transfer successful.");
@@ -147,6 +159,10 @@ public class Menu {
                         System.out.print("Account is currently frozen. Unfreeze it? (yes/no): ");
                         String input = scanner.nextLine().trim().toLowerCase();
                         if (input.equals("yes")) {
+                            if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) { // Verifying security question before unfreezing
+                                System.out.println("Security question incorrect. Logging out.");
+                                return;
+                            }
                             currentAccount.unfreezeAccount();
                             System.out.println("Account has been unfrozen.");
                         } else {
