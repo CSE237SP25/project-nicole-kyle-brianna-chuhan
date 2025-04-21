@@ -74,21 +74,32 @@ public class CreateAccount {
         return newAccount;
     }
 
-    // Lets user update their password
     public void changePassword() {
         System.out.print("Enter current password: ");
         String input = scanner.nextLine();
         if (!input.equals(currentPassword)) {
-            System.out.println("Incorrect password.");
+            System.out.println("Incorrect current password.");
             return;
         }
 
-        System.out.print("Enter new password: ");
-        String newPassword = scanner.nextLine();
-        userDatabase.put(currentUsername, newPassword);
-        currentPassword = newPassword;
-        System.out.println("Password updated successfully.");
+        while (true) {
+            System.out.print("Enter new password: ");
+            String newPassword1 = scanner.nextLine();
+
+            System.out.print("Re-enter new password: ");
+            String newPassword2 = scanner.nextLine();
+
+            if (!newPassword1.equals(newPassword2)) {
+                System.out.println("Passwords do not match. Please try again.");
+            } else {
+                userDatabase.put(currentUsername, newPassword1);
+                currentPassword = newPassword1;
+                System.out.println("Password updated successfully.");
+                break;
+            }
+        }
     }
+
 
     public String getCurrentUsername() {
         return currentUsername;
