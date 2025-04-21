@@ -25,9 +25,9 @@ public class Menu {
 
             switch (choice) {
                 case "1":
-                    currentAccount = accountManager.authenticateUser(); 
+                    currentAccount = accountManager.authenticateUser();
                     if (currentAccount != null) {
-                        showAccountMenu(); 
+                        showAccountMenu();
                     }
                     break;
                 case "2":
@@ -39,7 +39,6 @@ public class Menu {
         }
     }
 
-    // Shows banking operation menu for logged-in user
     private static void showAccountMenu() {
         while (true) {
             System.out.println("\n--- Account Menu (" + currentAccount.getAccountType() + ") ---");
@@ -48,14 +47,11 @@ public class Menu {
             System.out.println("3. Check Balance");
             System.out.println("4. Change Password");
             System.out.println("5. Transfer Money");
-            System.out.println("6. Logout");
-            System.out.println("7. View Transaction History");
-            System.out.println("8. Freeze/Unfreeze Account");
-            System.out.println("9. Delete Account");
+            System.out.println("6. Account Management");
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1": 
+                case "1":
                     if (currentAccount.isFrozen()) {
                         System.out.println("Account is frozen. Please unfreeze it to make a deposit.");
                         break;
@@ -70,7 +66,7 @@ public class Menu {
                     }
                     break;
 
-                case "2": 
+                case "2":
                     if (currentAccount.isFrozen()) {
                         System.out.println("Account is frozen. Please unfreeze it to make a withdrawal.");
                         break;
@@ -85,15 +81,15 @@ public class Menu {
                     }
                     break;
 
-                case "3": 
+                case "3":
                     System.out.printf("Current balance: $%.2f\n", currentAccount.getCurrentBalance());
                     break;
 
-                case "4": 
+                case "4":
                     accountManager.changePassword();
                     break;
 
-                case "5": 
+                case "5":
                     if (currentAccount.isFrozen()) {
                         System.out.println("Account is frozen. Please unfreeze it to transfer.");
                         break;
@@ -115,19 +111,38 @@ public class Menu {
                     }
                     break;
 
-                case "6": 
-                    System.out.println("Logged out.");
-                    currentAccount = null;
-                    return;
+                case "6":
+                    showAccountManagementMenu(); 
+                    if (currentAccount == null) return; 
+                    break;
 
-                case "7": 
+                default:
+                    System.out.println("Invalid input.");
+            }
+        }
+    }
+
+    private static void showAccountManagementMenu() {
+        while (true) {
+            System.out.println("\n--- Account Management Menu ---");
+            System.out.println("1. View Transaction History");
+            System.out.println("2. Freeze/Unfreeze Account");
+            System.out.println("3. Delete Account");
+            System.out.println("4. Logout");
+            System.out.println("5. View Account Info");
+            System.out.println("6. Back to Account Menu");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
                     System.out.println("--- Transaction History ---");
                     for (String record : currentAccount.getTransactionHistory()) {
                         System.out.println(record);
                     }
                     break;
 
-                case "8": 
+                case "2":
                     if (currentAccount.isFrozen()) {
                         System.out.print("Account is currently frozen. Unfreeze it? (yes/no): ");
                         String input = scanner.nextLine().trim().toLowerCase();
@@ -149,25 +164,61 @@ public class Menu {
                     }
                     break;
 
-                case "9": 
+                case "3":
                     accountManager.deleteAccount();
                     currentAccount = null;
-                    return;
+                    return; 
+
+                case "4":
+                    System.out.println("Logged out.");
+                    currentAccount = null;
+                    return; 
+                    
+                case "5": 
+                    viewAccountInfo(); 
+                    break;
+
+                case "6":
+                    return; 
 
                 default:
                     System.out.println("Invalid input.");
             }
+
+            if (currentAccount == null) {
+               
+                return;
+            }
+        }
+    }
+    private static void viewAccountInfo() {
+        System.out.println("\n--- Account Information ---");
+        System.out.println("Username: " + accountManager.getCurrentUsername());  
+        System.out.println("Account Type: " + currentAccount.getAccountType());
+        System.out.println("Current Balance: $" + String.format("%.2f", currentAccount.getCurrentBalance()));
+        System.out.println("\n--- Deposit, Withdrawal, and Transfer Records ---");
+
+        boolean hasRecord = false;
+        for (String record : currentAccount.getTransactionHistory()) {
+            String lowerRecord = record.toLowerCase();
+            if (lowerRecord.contains("deposit") || lowerRecord.contains("withdrew") || lowerRecord.contains("transfer")) {
+                System.out.println(record);
+                hasRecord = true;
+            }
+        }
+
+        if (!hasRecord) {
+            System.out.println("No deposit, withdrawal, or transfer records found.");
         }
     }
 
-    // Gets valid double input from user
     private static double getDoubleInput() {
         while (!scanner.hasNextDouble()) {
             System.out.print("Invalid input. Please enter a number: ");
             scanner.next();
         }
         double value = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
         return value;
     }
 }
