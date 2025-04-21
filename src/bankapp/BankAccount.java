@@ -53,6 +53,11 @@ public class BankAccount {
             this.balance -= amount;
             transactionHistory.add("Withdrew: $" + String.format("%.2f", amount));
         }
+      
+        // Alert if balance goes below $50
+        if (this.balance < 50) {
+            System.out.println("!Alert! Your account balance is below $50.");
+        }
     }
 
  
