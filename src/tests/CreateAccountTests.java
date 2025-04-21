@@ -57,6 +57,7 @@ public class CreateAccountTests {
         
         assertEquals("newPass", userDatabase.get("user"));
     }
+    
 }
 
 
