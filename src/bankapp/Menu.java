@@ -82,7 +82,7 @@ public class Menu {
                     double withdrawAmount = parseDoubleOrBack(withdrawInput);
                     if (withdrawAmount == -1) break;
 
-                    if (wd >= 10000) { // Verifying security question for large withdrawals
+                    if (withdrawAmount >= 10000) { // Verifying security question for large withdrawals
                         if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) {
                             System.out.println("Security question incorrect. Logging out.");
                             return;
