@@ -47,11 +47,16 @@ public class BankAccount {
         if (amount > this.balance) {
             double overdraftFee = 10;
             System.out.println("Insufficient funds. You will be charged an overdraft fee of $" + overdraftFee);
-            this.balance -= (amount + overdraftFee);
+            this.balance -= (overdraftFee);
             transactionHistory.add("Overdraft: Withdrew $" + String.format("%.2f", amount) + " + $" + overdraftFee + " fee");
         } else {
             this.balance -= amount;
             transactionHistory.add("Withdrew: $" + String.format("%.2f", amount));
+        }
+      
+        // Alert if balance goes below $50
+        if (this.balance < 50) {
+            System.out.println("!Alert! Your account balance is below $50.");
         }
     }
 

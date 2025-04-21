@@ -1,10 +1,12 @@
 package bankapp;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class CreateAccount {
     private HashMap<String, String> userDatabase;
     private HashMap<String, BankAccount> accountMap = new HashMap<>();
+    private HashMap<String, String> securityQuestions = new HashMap<>(); 
     private Scanner scanner;
     private String currentUsername;
     private String currentPassword;
@@ -55,6 +57,12 @@ public class CreateAccount {
         currentUsername = username;
         currentPassword = password;
         System.out.println("Account created successfully!");
+
+        // Set the security question for the new account
+        System.out.print("Set your security question answer (What is your favorite color?): ");
+        String answer = scanner.nextLine();
+        securityQuestions.put(username, answer); 
+
         return chooseAccountType();
     }
 
@@ -113,6 +121,13 @@ public class CreateAccount {
         System.out.println("Account for '" + currentUsername + "' has been deleted.");
         currentUsername = null;
         currentPassword = null;
+    }
+
+    // Method to verify security question
+    public boolean verifySecurityQuestion(String username) {
+        System.out.print("Answer your security question (What is your favorite color?): ");
+        String input = scanner.nextLine();
+        return securityQuestions.containsKey(username) && securityQuestions.get(username).equals(input);
     }
 }
 
