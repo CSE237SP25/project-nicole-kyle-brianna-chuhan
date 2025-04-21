@@ -38,6 +38,7 @@ public class Menu {
             }
         }
     }
+    
 
     private static void showAccountMenu() {
         while (true) {
@@ -48,7 +49,8 @@ public class Menu {
             System.out.println("4. Change Password");
             System.out.println("5. Transfer Money");
             System.out.println("6. Account Management");
-            String choice = scanner.nextLine();
+
+          String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
@@ -56,10 +58,13 @@ public class Menu {
                         System.out.println("Account is frozen. Please unfreeze it to make a deposit.");
                         break;
                     }
-                    System.out.print("Enter amount to deposit: ");
-                    double dep = getDoubleInput();
+                    System.out.print("Enter amount to deposit (or type 'back' to return): ");
+                    String depositInput = scanner.nextLine();
+                    if (checkBack(depositInput)) break;
+                    double depositAmount = parseDoubleOrBack(depositInput);
+                    if (depositAmount == -1) break;
                     try {
-                        currentAccount.deposit(dep);
+                        currentAccount.deposit(depositAmount);
                         System.out.println("Deposit successful.");
                     } catch (IllegalArgumentException e) {
                         System.out.println("Invalid deposit amount.");
@@ -71,8 +76,12 @@ public class Menu {
                         System.out.println("Account is frozen. Please unfreeze it to make a withdrawal.");
                         break;
                     }
-                    System.out.print("Enter amount to withdraw: ");
-                    double wd = getDoubleInput();
+                    System.out.print("Enter amount to withdraw (or type 'back' to return): ");
+                    String withdrawInput = scanner.nextLine();
+                    if (checkBack(withdrawInput)) break;
+                    double withdrawAmount = parseDoubleOrBack(withdrawInput);
+                    if (withdrawAmount == -1) break;
+
                     if (wd >= 10000) { // Verifying security question for large withdrawals
                         if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) {
                             System.out.println("Security question incorrect. Logging out.");
@@ -80,7 +89,7 @@ public class Menu {
                         }
                     }
                     try {
-                        currentAccount.withdraw(wd);
+                        currentAccount.withdraw(withdrawAmount);
                         System.out.println("Withdrawal successful.");
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
@@ -100,15 +109,20 @@ public class Menu {
                         System.out.println("Account is frozen. Please unfreeze it to transfer.");
                         break;
                     }
-                    System.out.print("Enter recipient username: ");
+                    System.out.print("Enter recipient username (or type 'back' to return): ");
                     String recipientUsername = scanner.nextLine();
+                    if (checkBack(recipientUsername)) break;
                     BankAccount recipientAccount = accountManager.getAccountByUsername(recipientUsername);
                     if (recipientAccount == null) {
                         System.out.println("Recipient account not found.");
                         break;
                     }
-                    System.out.print("Enter amount to transfer: ");
-                    double transferAmount = getDoubleInput();
+                    System.out.print("Enter amount to transfer (or type 'back' to return): ");
+                    String transferInput = scanner.nextLine();
+                    if (checkBack(transferInput)) break;
+                    double transferAmount = parseDoubleOrBack(transferInput);
+                    if (transferAmount == -1) break;
+                
                     if (transferAmount >= 10000) { // Verifying security question for large transfers
                         if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) {
                             System.out.println("Security question incorrect. Logging out.");
@@ -153,11 +167,12 @@ public class Menu {
                         System.out.println(record);
                     }
                     break;
-
+                
                 case "2":
                     if (currentAccount.isFrozen()) {
-                        System.out.print("Account is currently frozen. Unfreeze it? (yes/no): ");
+                        System.out.print("Account is currently frozen. Unfreeze it? (yes/no, or type 'back' to return): ");
                         String input = scanner.nextLine().trim().toLowerCase();
+                        if (checkBack(input)) break;
                         if (input.equals("yes")) {
                             if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) { // Verifying security question before unfreezing
                                 System.out.println("Security question incorrect. Logging out.");
@@ -169,8 +184,9 @@ public class Menu {
                             System.out.println("No changes made.");
                         }
                     } else {
-                        System.out.print("Are you sure you want to freeze your account? (yes/no): ");
+                        System.out.print("Are you sure you want to freeze your account? (yes/no, or type 'back' to return): ");
                         String input = scanner.nextLine().trim().toLowerCase();
+                        if (checkBack(input)) break;
                         if (input.equals("yes")) {
                             currentAccount.freezeAccount();
                             System.out.println("Account has been frozen.");
@@ -228,13 +244,20 @@ public class Menu {
         }
     }
 
-    private static double getDoubleInput() {
-        while (!scanner.hasNextDouble()) {
-            System.out.print("Invalid input. Please enter a number: ");
-            scanner.next();
+    // Check for 'back' input
+    private static boolean checkBack(String input) {
+        return input.trim().equalsIgnoreCase("back");
+    }
+
+    // Parse double or return -1 if 'back'
+    private static double parseDoubleOrBack(String input) {
+        if (checkBack(input)) return -1;
+        try {
+            return Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number.");
+            return -1;
         }
-        double value = scanner.nextDouble();
-        scanner.nextLine(); 
-        return value;
     }
 }
+
