@@ -3,7 +3,7 @@ package bankapp;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class CreateAccount {
+public class CreateAccountMenu {
     private HashMap<String, String> userDatabase;
     private HashMap<String, BankAccount> accountMap = new HashMap<>();
     private HashMap<String, String> securityQuestions = new HashMap<>(); 
@@ -11,7 +11,7 @@ public class CreateAccount {
     private String currentUsername;
     private String currentPassword;
 
-    public CreateAccount(HashMap<String, String> userDatabase, Scanner scanner) {
+    public CreateAccountMenu(HashMap<String, String> userDatabase, Scanner scanner) {
         this.userDatabase = userDatabase;
         this.scanner = scanner;
     }
