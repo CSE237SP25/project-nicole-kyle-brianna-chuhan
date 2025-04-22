@@ -11,10 +11,10 @@ public class Menu {
     private static Scanner scanner = new Scanner(System.in);
     private static HashMap<String, String> userDatabase = new HashMap<>();
     private static BankAccount currentAccount = null;
-    private static CreateAccount accountManager;
+    private static CreateAccountMenu accountManager;
 
     public static void main(String[] args) {
-        accountManager = new CreateAccount(userDatabase, scanner);
+        accountManager = new CreateAccountMenu(userDatabase, scanner);
 
         while (true) {
             System.out.println("\n--- Welcome to BankApp ---");
