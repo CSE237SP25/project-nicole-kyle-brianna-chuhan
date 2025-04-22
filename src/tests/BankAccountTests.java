@@ -68,7 +68,73 @@ public class BankAccountTests {
     }
 
     @Test
-    public void testBalanceBelow50Alert() {
+    public void testSetSpendingLimitAndWithdrawUnderLimit() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(200);
+
+        account.setSpendingLimit(100);
+        // Withdrawing an amount below limit (e.g., 80) should succeed
+        account.withdraw(80);
+
+        assertEquals(120, account.getCurrentBalance(), 0.01);
+    }
+
+    @Test
+    public void testWithdrawOverSpendingLimit() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(200);
+
+        account.setSpendingLimit(100);
+
+        // Attempting to withdraw more than 100 should fail
+        assertThrows(IllegalArgumentException.class, () -> account.withdraw(150));
+        assertEquals(200, account.getCurrentBalance(), 0.01);
+    }
+
+    @Test
+    public void testSetZeroOrNegativeSpendingLimitThrowsException() {
+        BankAccount account = new BankAccount(null);
+        
+        // Setting limit to zero or negative should fail
+        assertThrows(IllegalArgumentException.class, () -> account.setSpendingLimit(0));
+        assertThrows(IllegalArgumentException.class, () -> account.setSpendingLimit(-50));
+    }
+
+    @Test
+    public void testClearSpendingLimit() {
+        BankAccount account = new BankAccount(null);
+        account.deposit(200);
+
+        account.setSpendingLimit(100);
+        account.clearSpendingLimit();
+
+        // Now should be able to withdraw any amount (assuming enough balance)
+        account.withdraw(150);
+
+        assertEquals(50, account.getCurrentBalance(), 0.01);
+    }
+
+    @Test
+    public void testSpendingLimitForTransfer() {
+        BankAccount account1 = new BankAccount(null);
+        BankAccount account2 = new BankAccount(null);
+        
+        account1.deposit(300);
+        
+        // Enforce the limit on transfers
+        account1.setSpendingLimit(100);
+
+        assertThrows(IllegalArgumentException.class, () -> account1.transferTo(account2, 150));
+
+        assertEquals(300, account1.getCurrentBalance(), 0.01);
+        assertEquals(0, account2.getCurrentBalance(), 0.01);
+
+        account1.transferTo(account2, 100);
+        assertEquals(200, account1.getCurrentBalance(), 0.01);
+        assertEquals(100, account2.getCurrentBalance(), 0.01);
+    
+     @Test
+     public void testBalanceBelow50Alert() {
         // Capture console output
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;
@@ -128,10 +194,3 @@ public class BankAccountTests {
     }
     
 }
-
-
-
-
-
-
-

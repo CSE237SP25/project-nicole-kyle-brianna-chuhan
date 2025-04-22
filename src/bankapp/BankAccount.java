@@ -13,6 +13,8 @@ public class BankAccount {
     private List<String> transactionHistory;   
     private boolean isFrozen = false;          
 
+	  private Double spendingLimit;
+          
     /**
      * Constructor to initialize a bank account with the given type.
      * Starts with 0 balance.
@@ -22,6 +24,8 @@ public class BankAccount {
         this.accountType = accountType;
         this.transactionHistory = new ArrayList<>();
         transactionHistory.add("Account created with type: " + accountType);
+      	this.spendingLimit = null;
+
     }
 
     /**
@@ -44,6 +48,10 @@ public class BankAccount {
         if (isFrozen) throw new IllegalStateException("Account is frozen.");
         if (amount <= 0) throw new IllegalArgumentException("Withdrawal amount must be non-negative.");
 
+        if (spendingLimit != null && amount > spendingLimit) {
+           throw new IllegalArgumentException("Cannot withdraw more than your spending limit: " + spendingLimit);
+        }
+      
         if (amount > this.balance) {
             double overdraftFee = 10;
             System.out.println("Insufficient funds. You will be charged an overdraft fee of $" + overdraftFee);
@@ -116,5 +124,20 @@ public class BankAccount {
     public void unfreezeAccount() {
         isFrozen = false;
         transactionHistory.add("Account has been unfrozen.");
+    }
+	
+    public void setSpendingLimit(double limit) {
+        if (limit <= 0) {
+            throw new IllegalArgumentException("Spending limit must be positive.");
+        }
+        this.spendingLimit = limit;
+    }
+
+    public void clearSpendingLimit() {
+        this.spendingLimit = null;
+    }
+
+    public Double getSpendingLimit() {
+        return this.spendingLimit;
     }
 }
