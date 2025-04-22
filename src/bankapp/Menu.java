@@ -82,7 +82,8 @@ public class Menu {
                     double withdrawAmount = parseDoubleOrBack(withdrawInput);
                     if (withdrawAmount == -1) break;
 
-                    if (wd >= 10000) { // Verifying security question for large withdrawals
+                    if (withdrawAmount >= 10000) { // Verifying security question for large withdrawals
+
                         if (!accountManager.verifySecurityQuestion(accountManager.getCurrentUsername())) {
                             System.out.println("Security question incorrect. Logging out.");
                             return;
@@ -248,39 +249,38 @@ public class Menu {
             System.out.println("No deposit, withdrawal, or transfer records found.");
         }
     }
-
     // Spending Limit
     private static void setSpendingLimitMenuOption() {
-    System.out.print("Enter a new spending limit (e.g. '100'), 'clear' to remove the limit, or 'back' to return: ");
-    String limitInput = scanner.nextLine().trim();
+      System.out.print("Enter a new spending limit (e.g. '100'), 'clear' to remove the limit, or 'back' to return: ");
+      String limitInput = scanner.nextLine().trim();
 
-    // Check if user wants to go back
-    if (checkBack(limitInput)) {
-        return;
-    }
+      // Check if user wants to go back
+      if (checkBack(limitInput)) {
+          return;
+      }
     
-    // If user wants to clear the limit:
-    if (limitInput.equalsIgnoreCase("clear")) {
-        currentAccount.clearSpendingLimit();
-        System.out.println("Spending limit cleared.");
-        return;
-    }
+      // If user wants to clear the limit:
+      if (limitInput.equalsIgnoreCase("clear")) {
+          currentAccount.clearSpendingLimit();
+          System.out.println("Spending limit cleared.");
+          return;
+      }
 
-    // Otherwise, try to parse a double
-    double parsedLimit = parseDoubleOrBack(limitInput);
-    if (parsedLimit == -1) {
-        // parseDoubleOrBack() will already show an error or handle 'back'
-        return;
-    }
+      // Otherwise, try to parse a double
+      double parsedLimit = parseDoubleOrBack(limitInput);
+      if (parsedLimit == -1) {
+          // parseDoubleOrBack() will already show an error or handle 'back'
+          return;
+      }
 
-    // Attempt to set the spending limit
-    try {
-        currentAccount.setSpendingLimit(parsedLimit);
-        System.out.println("Spending limit set to: $" + parsedLimit);
-    } catch (IllegalArgumentException e) {
-        System.out.println(e.getMessage());
-    }
-    }    
+          // Attempt to set the spending limit
+      try {
+          currentAccount.setSpendingLimit(parsedLimit);
+          System.out.println("Spending limit set to: $" + parsedLimit);
+      } catch (IllegalArgumentException e) {
+          System.out.println(e.getMessage());
+      }
+    }           
 
     // Check for 'back' input
     private static boolean checkBack(String input) {
@@ -298,3 +298,4 @@ public class Menu {
         }
     }
 }
+

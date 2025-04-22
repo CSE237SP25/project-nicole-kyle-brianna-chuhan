@@ -4,6 +4,7 @@ Team Members:
   - Nicole Jackson
   - Chuhan Qiao
   - Kyle Beedon
+
 For each iteration you should answer the following:
   - What user stories were completed this iteration?
       - Deposit:
@@ -78,8 +79,3 @@ For each iteration you should answer the following:
             6: Logout
             7: View Transaction History
             8: Freeze/Unfreeze Account
-            9: Delete Account
-
-
-
-

@@ -68,5 +68,19 @@ public class MenuTests {
         assertEquals(300.0, sender.getCurrentBalance(), 0.01);
         assertEquals(200.0, receiver.getCurrentBalance(), 0.01);
     }
+    
+    @Test
+    public void testFreezeBlocksTransactions() {
+        BankAccount account = new BankAccount("checking");
+        account.deposit(100);
+        account.freezeAccount();
+
+        assertThrows(IllegalStateException.class, () -> account.deposit(50));
+        assertThrows(IllegalStateException.class, () -> account.withdraw(20));
+
+        account.unfreezeAccount();
+        account.deposit(10);
+        assertEquals(110.0, account.getCurrentBalance(), 0.01);
+    }
 }
 
