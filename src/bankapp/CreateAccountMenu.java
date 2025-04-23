@@ -93,6 +93,11 @@ public class CreateAccountMenu {
 
         System.out.print("Enter new password: ");
         String newPassword = scanner.nextLine();
+        
+        if (newPassword.equals(currentPassword)) {
+        System.out.println("New password cannot be the same as the current password.");
+        return;
+        }
         userDatabase.put(currentUsername, newPassword);
         currentPassword = newPassword;
         System.out.println("Password updated successfully.");
