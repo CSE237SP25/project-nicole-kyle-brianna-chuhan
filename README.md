@@ -9,9 +9,11 @@ Iteration 3:
 For each iteration you should answer the following:
   - What user stories were completed this iteration?
      -  A bank customer should be able to access an account management menu (Chuhan)
+     -  A bank customer should be able to see account information (Chuhan)
      -  A bank customer should be able to set a limit so they can't withdraw too much (Nicole)
      -  A bank customer should be able to go back on a given page with a back button (Kyle)
      -  A bank customer should not be able to rest their password with the same password (
+     -  A bank customer should set their favorite color as a authentiacation
   - What user stories do you intend to complete in the next iteration?
      - None
   - Is there anything that you implemented but doesn't currently work?
